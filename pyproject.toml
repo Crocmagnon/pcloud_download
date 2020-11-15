@@ -3,7 +3,7 @@ name = "pcloud_download"
 version = "0.1.0"
 description = ""
 authors = ["Gabriel Augendre <gabriel@augendre.info>"]
-license = "GPL v3"
+license = "GPL-3.0-or-later"
 
 [tool.poetry.dependencies]
 python = "^3.8"
