@@ -5,7 +5,6 @@ import sys
 
 import requests
 
-
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -29,7 +28,15 @@ class PCloudClient:
         email_sha = self._sha1(PCLOUD_USER_EMAIL.lower())
         logger.debug("email_sha: %s", email_sha)
         password_digest = self._sha1(PCLOUD_USER_PASSWORD + email_sha + digest)
-        return self._get("/userinfo", params={"getauth": 1, "digest": digest, "username": PCLOUD_USER_EMAIL, "passworddigest": password_digest})
+        return self._get(
+            "/userinfo",
+            params={
+                "getauth": 1,
+                "digest": digest,
+                "username": PCLOUD_USER_EMAIL,
+                "passworddigest": password_digest,
+            },
+        )
 
     def get_digest(self):
         return self._get("/getdigest").get("digest")
@@ -53,7 +60,9 @@ class PCloudClient:
             return "https://api.pcloud.com"
         elif PCLOUD_USER_REGION == "eu":
             return "https://eapi.pcloud.com"
-        raise ValueError("PCLOUD_USER_REGION doesn't contain a supported value. Supported values: [us, eu].")
+        raise ValueError(
+            "PCLOUD_USER_REGION doesn't contain a supported value. Supported values: [us, eu]."
+        )
 
 
 if __name__ == "__main__":
