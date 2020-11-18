@@ -21,6 +21,7 @@ def main():
 class PCloudClient:
     def __init__(self):
         self.session = requests.Session()
+        self.auth = None
 
     def login(self):
         digest = self.get_digest()
@@ -28,7 +29,7 @@ class PCloudClient:
         email_sha = self._sha1(PCLOUD_USER_EMAIL.lower())
         logger.debug("email_sha: %s", email_sha)
         password_digest = self._sha1(PCLOUD_USER_PASSWORD + email_sha + digest)
-        return self._get(
+        res = self._get(
             "/userinfo",
             params={
                 "getauth": 1,
@@ -37,10 +38,11 @@ class PCloudClient:
                 "passworddigest": password_digest,
             },
         )
+        self.auth = res["auth"]
+        return res
 
     def get_digest(self):
         return self._get("/getdigest").get("digest")
-        return data.get("digest")
 
     @staticmethod
     def _sha1(string):
